@@ -1,4 +1,5 @@
 # Trunk-Studio Interview Test
+<img src="./todoList.png"/>
 
 ## GET START
 ```npm start ```

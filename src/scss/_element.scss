@@ -1,0 +1,58 @@
+//button
+
+.btn {
+    padding: 3%;
+    border: none;
+    border-radius: 5px;
+    bottom: 4px;
+    cursor: pointer;
+
+    &:focus {
+        outline: none;
+    }
+}
+
+.secondary-btn {
+    color: $primary;
+
+    margin-left: 10px;
+    border: $primary solid 1px;
+    padding: 2%;
+
+    &:hover {
+        background-color: $primary;
+        color: $primary-text;
+    }
+}
+
+.info-btn {
+    position: absolute;
+    color: $info-text;
+    background-color: $info;
+    right: 50px;
+}
+
+.danger-btn {
+    position: absolute;
+    color: $danger-text;
+    background-color: $danger;
+    right: 10px;
+}
+
+//input
+
+.input-default {
+    border: none;
+    box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.16);
+    padding: 10px;
+    background: white;
+    border-radius: 10px;
+    width: 40%;
+    color:$primary;
+    display:block;
+    margin-bottom: 10px;
+
+    &:focus {
+        outline: none;
+    }
+}

@@ -1,0 +1,26 @@
+@import '../../scss/main';
+
+.todo-list {
+    padding: 0;
+
+    .todo-list-item {
+        list-style: none;
+        width: 40%;
+        position: relative;        
+    }
+
+    .todo-list-complete {
+        text-decoration: line-through;
+    }
+    .todo-list-check[type="checkbox"] {
+        background-color: $secondary;
+        margin-right:5px;
+    }
+    .todo-list-text{
+      color:$primary;
+      background: white;
+    }
+    .todo-list-edit{
+      margin-right:5px;
+    }
+}

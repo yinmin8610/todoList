@@ -3,6 +3,7 @@ import './App.scss';
 import Title from './component/title';
 import CreateTodo from './component/createTodo';
 import TodoList from './component/todoList';
+import { async } from 'q';
 
 
 
@@ -10,16 +11,28 @@ class App extends Component {
   constructor(props) {
     super(props)
 
-    let todos = [
-      { id: 0, text: 'eat', isEdited: false, isChecked: false }
-    ]
+    // let todos = [
+    //   { id: 0, text: 'eat', isEdited: false, isChecked: false }
+    // ]
     this.state = {
-      todos: todos,
+      todos: [],
       startId: 1
     }
   }
 
-  createTodo(text) {
+  createTodo = async (text) => {
+    await fetch('http://localhost:5000/api/addTodo', {
+      method: "POST",
+      mode: "cors",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        text: text,
+        isChecked: false,
+        isEdited: false
+      })
+    })
+      .then(response => response.json())
+
     this.setState({
       todos: [...this.state.todos, { id: this.state.startId, text: text, isEdited: false, isChecked: false }],
       startId: this.state.startId + 1
@@ -27,15 +40,6 @@ class App extends Component {
   }
 
   editTodo(id) {
-
-    // const todos = this.state.todos;
-    // for (let i = 0; i < todos.length; i++) {
-    //   if (i === id) {
-    //     // console.log('!!', id)
-    //     todos[i].isEdited = true
-    //     this.setState({ todos })
-    //   }
-    // }
 
     const todos = this.state.todos.map(todo => {
       if (todo.id === id) {
@@ -46,7 +50,20 @@ class App extends Component {
     this.setState({ todos });
   }
 
-  removeTodo(id) {
+  removeTodo = async (id) => {
+    await fetch('http://localhost:5000/api/Delete', {
+      method: "POST",
+      mode: "cors",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        id: id
+      })
+    })
+
+
+      .then(response => response.json())
+
+
     this.setState({
       todos: this.state.todos.filter(todo => {
         return todo.id !== id
@@ -56,13 +73,6 @@ class App extends Component {
 
   updateTodo(id, text) {
 
-    // const todos = this.state.todos;
-    // for (let i = 0; i < todos.length; i++) {
-    //   if (i === id) {
-    //     todos[i].text = text;
-    //     this.setState({ todos });
-    //   }
-    // }
     const todos = this.state.todos.map(todo => {
       if (todo.id === id) {
         todo.text = text;
@@ -72,18 +82,23 @@ class App extends Component {
     this.setState({ todos });
   }
 
-  saveEdit(event, id) {
+  saveEdit(event, id, text) {
 
-    // const todos = this.state.todos;
-    // for (let i = 0; i < todos.length; i++) {
-    //   if (i === id && event.charCode === 13) {
-    //     todos[i].isEdited = false
-    //     this.setState({ todos })
 
-    //   }
-    // }
+
     const todos = this.state.todos.map(todo => {
       if (todo.id === id && event.charCode === 13) {
+        fetch('http://localhost:5000/api/Edit', {
+          method: "POST",
+          mode: "cors",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            id: id,
+            text: text,
+            isEdited: false
+          })
+        })
+          .then(response => response.json())
         todo.isEdited = false
       }
       return todo;
@@ -94,14 +109,6 @@ class App extends Component {
 
   completeTodo(id) {
 
-    // const todos = this.state.todos;
-    // for (let i = 0; i < todos.length; i++) {
-    //   if (i === id) {
-    //     console.log('!!')
-    //     todos[i].isChecked = !this.state.todos[i].isChecked
-    //     this.setState({ todos })
-    //   }
-    // }
     const todos = this.state.todos.map(todo => {
       if (todo.id === id) {
         // console.log(todo.isChecked)
@@ -110,6 +117,16 @@ class App extends Component {
       return todo;
     });
     this.setState({ todos });
+  }
+
+  componentDidMount = async () => {
+    await fetch('http://localhost:5000/api/getAllTodos', {
+      method: "GET",
+      mode: "cors"
+    })
+      .then(response => response.json())
+      .then(data => this.setState({ todos: data.data }))
+    // console.log(this.state.todos)
   }
 
   render() {
@@ -126,7 +143,7 @@ class App extends Component {
           completeTodo={(id) => this.completeTodo(id)}
           updateTodo={(id, text) => this.updateTodo(id, text)}
           editTodo={(id) => this.editTodo(id)}
-          saveEdit={(event, id) => this.saveEdit(event, id)}
+          saveEdit={(event, id, text) => this.saveEdit(event, id, text)}
           removeTodo={(id) => this.removeTodo(id)}
         />
       </div>

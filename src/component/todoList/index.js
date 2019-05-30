@@ -3,7 +3,13 @@ import './index.scss';
 
 
 class TodoList extends Component {
+  constructor(props) {
+    super(props)
+    this.state = {
+      inputValue: ''
+    }
 
+  }
   render() {
     return (
       <ul className="todo-list">
@@ -14,8 +20,13 @@ class TodoList extends Component {
                 className="input-default"
                 type="text" value={todo.text}
                 key={todo.id}
-                onChange={(e) => this.props.updateTodo(todo.id, e.target.value)}
-                onKeyPress={(event) => this.props.saveEdit(event, todo.id)}
+                onChange={(e) => {
+                  this.props.updateTodo(todo.id, e.target.value);
+                  this.setState({
+                    inputValue: e.target.value
+                  });
+                }}
+                onKeyPress={(event) => {this.props.saveEdit(event, todo.id, this.state.inputValue)}}
               />
 
             ) : (

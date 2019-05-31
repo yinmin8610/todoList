@@ -3,7 +3,7 @@
 
 ## GET START
 
-```cd todolist```
+```cd trunk-todolist```
 ```npm install```
 ```npm start ```
 

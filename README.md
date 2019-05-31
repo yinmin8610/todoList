@@ -2,6 +2,9 @@
 
 
 ## GET START
+
+```cd todolist```
+```npm install```
 ```npm start ```
 
 My App is now running at http://localhost:3000

@@ -95,7 +95,8 @@ class App extends Component {
           body: JSON.stringify({
             id: id,
             text: text,
-            isEdited: false
+            isEdited: false,
+            isChecked: false
           })
         })
           .then(response => response.json())
@@ -108,11 +109,24 @@ class App extends Component {
 
 
   completeTodo(id) {
-
+   
     const todos = this.state.todos.map(todo => {
-      if (todo.id === id) {
+      if (todo.id === id) {          
         // console.log(todo.isChecked)
         todo.isChecked = !todo.isChecked
+
+        fetch('http://localhost:5000/api/Edit', {
+          method: "POST",
+          mode: "cors",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            id: id,
+            isChecked: todo.isChecked
+          })
+        })
+        
+          .then(response => response.json())
+          console.log(todo.isChecked)
       }
       return todo;
     });
